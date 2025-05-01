@@ -1,0 +1,560 @@
+/* General styles */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Activity Feed Styles */
+#activityFeed {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+#activityFeed::-webkit-scrollbar {
+    width: 6px;
+}
+
+#activityFeed::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#activityFeed::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+/* Stats Card Animations */
+.stat-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Notification Animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.notification {
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Source Badge Styles */
+.source-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.source-badge.facebook {
+    background-color: #1877f2;
+    color: white;
+}
+
+.source-badge.instagram {
+    background-color: #e4405f;
+    color: white;
+}
+
+.source-badge.linkedin {
+    background-color: #0077b5;
+    color: white;
+}
+
+.source-badge.website {
+    background-color: #34d399;
+    color: white;
+}
+
+/* Stats Counter Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.stat-pulse {
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* Map Point Styles */
+.map-point {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #3B82F6;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.map-point.active {
+    background-color: #F59E0B;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3);
+}
+
+.map-point::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: inherit;
+    animation: pulse 2s infinite;
+}
+
+/* Data Stream Animation */
+.data-stream-animation {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(59, 130, 246, 0.8), transparent);
+    animation: streamFlow 1.5s linear;
+    transform-origin: top;
+}
+
+/* Activity Feed Item Animation */
+.activity-item {
+    animation: slideIn 0.3s ease-out;
+}
+
+.activity-item:hover {
+    transform: translateX(4px);
+    transition: transform 0.2s ease;
+}
+
+/* Priority Indicator */
+.priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.priority-high {
+    background-color: #ef4444;
+}
+
+.priority-medium {
+    background-color: #f59e0b;
+}
+
+.priority-low {
+    background-color: #10b981;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    70% {
+        transform: scale(2);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+@keyframes streamFlow {
+    from {
+        height: 0;
+        opacity: 1;
+    }
+    to {
+        height: 100px;
+        opacity: 0;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Terminal Styles */
+.terminal-content {
+    font-family: 'Courier New', monospace;
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 4px;
+    height: 200px;
+    overflow-y: auto;
+}
+
+.terminal-line {
+    margin: 4px 0;
+    color: #a0a0a0;
+}
+
+.terminal-line.success { color: #10B981; }
+.terminal-line.error { color: #EF4444; }
+.terminal-line.warning { color: #F59E0B; }
+
+.typing-animation {
+    border-right: 2px solid #a0a0a0;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: #a0a0a0; }
+}
+
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+/* Dark theme for map */
+.gm-style {
+    background-color: #1a202c !important;
+}
+
+/* Custom marker pulse animation */
+@keyframes markerPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* Network Visualization */
+.data-stream {
+    animation: streamFlow 2s linear forwards;
+    opacity: 0;
+}
+
+@keyframes streamFlow {
+    0% {
+        opacity: 0;
+        transform-origin: 0 0;
+        transform: scaleX(0) rotate(var(--angle));
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform-origin: 0 0;
+        transform: scaleX(1) rotate(var(--angle));
+    }
+}
+
+@keyframes ping {
+    75%, 100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.animate-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.network-visualization {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.network-visualization svg {
+    width: 100%;
+    height: 100%;
+}
+
+.network-visualization .zone {
+    fill: rgba(255, 255, 255, 0.05);
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1;
+}
+
+.network-visualization .zone-label {
+    fill: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.network-visualization .hub {
+    fill: #3b82f6;
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+}
+
+.network-visualization .hub-label {
+    fill: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.network-visualization .connection-point {
+    fill: #3b82f6;
+    filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.5));
+}
+
+.network-visualization .connection-point.high-priority {
+    fill: #ef4444;
+    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.5));
+}
+
+.network-visualization .data-stream {
+    stroke: #3b82f6;
+    stroke-width: 2;
+    stroke-dasharray: 4;
+    opacity: 0.6;
+}
+
+.network-visualization .data-stream.high-priority {
+    stroke: #ef4444;
+}
+
+@keyframes streamFlow {
+    0% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+}
+
+@keyframes ping {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-ping {
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.lead-flow-container {
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.source-node, .output-node {
+    transition: transform 0.2s ease-out;
+}
+
+.source-node:hover, .output-node:hover {
+    transform: translateY(-2px);
+}
+
+.hub-circle {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.flow-line {
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+}
+
+.flow-particles {
+    overflow: hidden;
+}
+
+.source-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.source-badge.facebook {
+    background-color: #1877f2;
+    color: white;
+}
+
+.source-badge.instagram {
+    background-color: #e4405f;
+    color: white;
+}
+
+.source-badge.linkedin {
+    background-color: #0a66c2;
+    color: white;
+}
+
+.source-badge.google {
+    background-color: #ea4335;
+    color: white;
+}
+
+.source-badge.website {
+    background-color: #4b5563;
+    color: white;
+}
+
+@keyframes scale {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.scale-110 {
+    animation: scale 0.2s ease-out;
+}
+
+.indore-map-container {
+    background: #1a1a1a;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.activity-point {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.activity-point::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: ripple 2s infinite ease-out;
+}
+
+.activity-point.normal {
+    background: rgba(59, 130, 246, 0.9);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+}
+
+.activity-point.normal::before {
+    background: rgba(59, 130, 246, 0.4);
+}
+
+.activity-point.high-priority {
+    background: rgba(239, 68, 68, 0.9);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+}
+
+.activity-point.high-priority::before {
+    background: rgba(239, 68, 68, 0.4);
+}
+
+@keyframes ripple {
+    0% {
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+    }
+    100% {
+        width: 300%;
+        height: 300%;
+        opacity: 0;
+    }
+}
+
+.source-stat, .stat-box {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.source-stat:hover, .stat-box:hover {
+    transform: translateY(-2px);
+}
+
+.stat-box.qualified {
+    border-left: 3px solid #10B981;
+}
+
+.stat-box.pending {
+    border-left: 3px solid #F59E0B;
+}
+
+.stat-box.rejected {
+    border-left: 3px solid #EF4444;
+}
+
+.source-stat.facebook {
+    border-left: 3px solid #1877f2;
+}
+
+.source-stat.instagram {
+    border-left: 3px solid #e4405f;
+}
+
+.source-stat.linkedin {
+    border-left: 3px solid #0a66c2;
+}
+
+.source-stat.website {
+    border-left: 3px solid #4b5563;
+}
+
+.area-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 500;
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+} 

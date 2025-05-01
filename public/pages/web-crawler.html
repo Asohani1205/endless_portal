@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Crawler - Lead Generation Agent by Valency Tools</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="flex h-screen">
+        <!-- Sidebar (will be loaded dynamically) -->
+        <div id="sidebar"></div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold">Web Crawler Management</h1>
+                    <div class="flex items-center mt-2">
+                        <span class="text-sm">System Status</span>
+                        <span class="ml-2 px-2 py-1 bg-green-500 text-xs rounded-full">OPERATIONAL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crawler Controls -->
+            <div class="grid grid-cols-2 gap-6 mb-8">
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-lg mb-4">Active Crawlers</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between bg-gray-700 p-4 rounded">
+                            <div>
+                                <div class="font-medium">Social Media Crawler</div>
+                                <div class="text-sm text-gray-400">Facebook, LinkedIn, Instagram</div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="px-2 py-1 bg-green-500 text-xs rounded mr-2">Running</span>
+                                <button class="px-3 py-1 bg-red-500 rounded text-sm">Stop</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-700 p-4 rounded">
+                            <div>
+                                <div class="font-medium">Property Portal Crawler</div>
+                                <div class="text-sm text-gray-400">MagicBricks, 99Acres</div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="px-2 py-1 bg-green-500 text-xs rounded mr-2">Running</span>
+                                <button class="px-3 py-1 bg-red-500 rounded text-sm">Stop</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-700 p-4 rounded">
+                            <div>
+                                <div class="font-medium">Forums Crawler</div>
+                                <div class="text-sm text-gray-400">Local Forums, Discussion Boards</div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="px-2 py-1 bg-yellow-500 text-xs rounded mr-2">Paused</span>
+                                <button class="px-3 py-1 bg-green-500 rounded text-sm">Start</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-lg mb-4">Crawler Configuration</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Crawl Frequency</label>
+                            <select class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option>Every 15 minutes</option>
+                                <option>Every 30 minutes</option>
+                                <option>Every hour</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Priority Level</label>
+                            <select class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Target URLs</label>
+                            <textarea class="w-full bg-gray-700 rounded px-3 py-2 h-24"></textarea>
+                        </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded">Update Configuration</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Crawler Logs -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg mb-4">Crawler Logs</h3>
+                <div class="terminal-content">
+                    <div class="terminal-line success">[INFO] Social Media Crawler: Successfully fetched 23 new leads</div>
+                    <div class="terminal-line">[DEBUG] Property Portal Crawler: Scanning page 3 of MagicBricks</div>
+                    <div class="terminal-line warning">[WARN] Forums Crawler: Rate limit reached, cooling down</div>
+                    <div class="terminal-line error">[ERROR] Failed to connect to LinkedIn API, retrying...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/web-crawler.js"></script>
+</body>
+</html> 
