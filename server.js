@@ -1,7 +1,13 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: "https://sudarshanportal.netlify.app",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 const moment = require('moment');
 const connectDB = require('./config/database');
 const Lead = require('./models/Lead');
