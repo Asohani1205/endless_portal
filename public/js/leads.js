@@ -308,14 +308,14 @@ function debounce(func, wait) {
 }
 
 async function updateFetchingStatus() {
-    const res = await fetch('/api/fetching-status');
+    const res = await fetch(`${API_BASE_URL}/api/fetching-status`);
     const data = await res.json();
     toggleFetchingBtn.textContent = data.isFetching ? 'Stop Fetching' : 'Start Fetching';
 }
 
 toggleFetchingBtn?.addEventListener('click', async () => {
-    const res = await fetch(
-        toggleFetchingBtn.textContent.includes('Start') ? '/api/start-fetching' : '/api/stop-fetching',
+    await fetch(
+        `${API_BASE_URL}${toggleFetchingBtn.textContent.includes('Start') ? '/api/start-fetching' : '/api/stop-fetching'}`,
         { method: 'POST' }
     );
     await updateFetchingStatus();
