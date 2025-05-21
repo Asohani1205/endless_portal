@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard - Sudarshan leads Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 <body class="bg-gray-900 text-white">
-    <div class="flex h-screen">
+    <div class="flex flex-col md:flex-row h-screen">
         <!-- Sidebar (will be loaded dynamically) -->
         <div id="sidebar"></div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
-            <div class="flex justify-between items-center mb-8">
+        <div class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
                     <h1 class="text-2xl font-bold">Dashboard</h1>
                     <div class="flex items-center mt-2">
@@ -23,32 +23,32 @@
                         <span class="ml-2 px-2 py-1 bg-green-500 text-xs rounded-full">LIVE</span>
                     </div>
                 </div>
-                <div class="flex items-center">
-                    <input type="text" placeholder="Search..." class="bg-gray-700 px-4 py-2 rounded-lg">
-                    <button id="toggleFetchingBtn" class="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                      Start Fetching
+                <div class="flex flex-col md:flex-row items-stretch md:items-center w-full md:w-auto gap-4">
+                    <input type="text" placeholder="Search..." class="bg-gray-700 px-4 py-2 rounded-lg w-full md:w-auto">
+                    <button id="toggleFetchingBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg whitespace-nowrap">
+                        Start Fetching
                     </button>
                 </div>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-4 gap-6 mb-8">
-                <div class="bg-blue-600 p-6 rounded-lg">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+                <div class="bg-blue-600 p-4 md:p-6 rounded-lg">
                     <h3 class="text-lg mb-2">New Leads Today</h3>
                     <div class="text-3xl font-bold" id="newLeadsCount">0</div>
                     <div class="text-sm mt-2" id="leadsChange">Loading...</div>
                 </div>
-                <div class="bg-purple-600 p-6 rounded-lg">
+                <div class="bg-purple-600 p-4 md:p-6 rounded-lg">
                     <h3 class="text-lg mb-2">Active Crawlers</h3>
                     <div class="text-3xl font-bold" id="activeCrawlersCount">-</div>
                     <div class="text-sm mt-2" id="crawlerStatus">Loading...</div>
                 </div>
-                <div class="bg-green-600 p-6 rounded-lg">
+                <div class="bg-green-600 p-4 md:p-6 rounded-lg">
                     <h3 class="text-lg mb-2">Conversion Rate</h3>
                     <div class="text-3xl font-bold" id="conversionRate">-</div>
                     <div class="text-sm mt-2" id="conversionChange">Loading...</div>
                 </div>
-                <div class="bg-orange-600 p-6 rounded-lg">
+                <div class="bg-orange-600 p-4 md:p-6 rounded-lg">
                     <h3 class="text-lg mb-2">Data Points Collected</h3>
                     <div class="text-3xl font-bold" id="totalDataPoints">-</div>
                     <div class="text-sm mt-2" id="dailyDataPoints">Loading...</div>
@@ -56,10 +56,10 @@
             </div>
 
             <!-- Live Activity Feed -->
-            <div class="bg-gray-800 p-6 rounded-lg">
-                <div class="flex justify-between items-center mb-4">
+            <div class="bg-gray-800 p-4 md:p-6 rounded-lg">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
                     <h2 class="text-xl font-bold">Live Activity</h2>
-                    <div class="flex items-center space-x-4">
+                    <div class="flex flex-wrap items-center gap-2 md:gap-4">
                         <div class="flex items-center">
                             <span class="w-3 h-3 rounded-full bg-blue-600 mr-2"></span>
                             <span class="text-sm">Facebook</span>
@@ -83,7 +83,7 @@
                         <span class="px-2 py-1 bg-green-500 text-xs rounded-full">Live Updates</span>
                     </div>
                 </div>
-                <div id="activityFeed" class="space-y-4 max-h-[600px] overflow-y-auto">
+                <div id="activityFeed" class="space-y-4 max-h-[400px] md:max-h-[600px] overflow-y-auto">
                     <!-- Activity items will be dynamically added here -->
                 </div>
             </div>

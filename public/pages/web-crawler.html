@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Web Crawler - Sudarshan leads Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="../styles.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 text-white">
-    <div class="flex h-screen">
+    <div class="flex flex-col md:flex-row h-screen">
         <!-- Sidebar (will be loaded dynamically) -->
         <div id="sidebar"></div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
-            <div class="flex justify-between items-center mb-8">
+        <div class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
                     <h1 class="text-2xl font-bold">Web Crawler Management</h1>
                     <div class="flex items-center mt-2">
@@ -25,44 +25,44 @@
             </div>
 
             <!-- Crawler Controls -->
-            <div class="grid grid-cols-2 gap-6 mb-8">
-                <div class="bg-gray-800 p-6 rounded-lg">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-gray-800 p-4 md:p-6 rounded-lg">
                     <h3 class="text-lg mb-4">Active Crawlers</h3>
                     <div class="space-y-4">
-                        <div class="flex items-center justify-between bg-gray-700 p-4 rounded">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-700 p-4 rounded gap-4">
                             <div>
                                 <div class="font-medium">Social Media Crawler</div>
                                 <div class="text-sm text-gray-400">Facebook, LinkedIn, Instagram</div>
                             </div>
-                            <div class="flex items-center">
-                                <span class="px-2 py-1 bg-green-500 text-xs rounded mr-2">Running</span>
-                                <button class="px-3 py-1 bg-red-500 rounded text-sm">Stop</button>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-1 bg-green-500 text-xs rounded">Running</span>
+                                <button class="px-3 py-1 bg-red-500 rounded text-sm whitespace-nowrap">Stop</button>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between bg-gray-700 p-4 rounded">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-700 p-4 rounded gap-4">
                             <div>
                                 <div class="font-medium">Property Portal Crawler</div>
                                 <div class="text-sm text-gray-400">MagicBricks, 99Acres</div>
                             </div>
-                            <div class="flex items-center">
-                                <span class="px-2 py-1 bg-green-500 text-xs rounded mr-2">Running</span>
-                                <button class="px-3 py-1 bg-red-500 rounded text-sm">Stop</button>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-1 bg-green-500 text-xs rounded">Running</span>
+                                <button class="px-3 py-1 bg-red-500 rounded text-sm whitespace-nowrap">Stop</button>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between bg-gray-700 p-4 rounded">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-700 p-4 rounded gap-4">
                             <div>
                                 <div class="font-medium">Forums Crawler</div>
                                 <div class="text-sm text-gray-400">Local Forums, Discussion Boards</div>
                             </div>
-                            <div class="flex items-center">
-                                <span class="px-2 py-1 bg-yellow-500 text-xs rounded mr-2">Paused</span>
-                                <button class="px-3 py-1 bg-green-500 rounded text-sm">Start</button>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-1 bg-yellow-500 text-xs rounded">Paused</span>
+                                <button class="px-3 py-1 bg-green-500 rounded text-sm whitespace-nowrap">Start</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-gray-800 p-6 rounded-lg">
+                <div class="bg-gray-800 p-4 md:p-6 rounded-lg">
                     <h3 class="text-lg mb-4">Crawler Configuration</h3>
                     <form class="space-y-4">
                         <div>
@@ -91,7 +91,7 @@
             </div>
 
             <!-- Crawler Logs -->
-            <div class="bg-gray-800 p-6 rounded-lg">
+            <div class="bg-gray-800 p-4 md:p-6 rounded-lg">
                 <h3 class="text-lg mb-4">Crawler Logs</h3>
                 <div class="terminal-content">
                     <div class="terminal-line success">[INFO] Social Media Crawler: Successfully fetched 23 new leads</div>

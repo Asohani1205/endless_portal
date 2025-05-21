@@ -1,6 +1,8 @@
 /* General styles */
 body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Activity Feed Styles */
@@ -203,6 +205,9 @@ body {
     border-radius: 4px;
     height: 200px;
     overflow-y: auto;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .terminal-line {
@@ -557,4 +562,169 @@ body {
     font-weight: 500;
     pointer-events: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive sidebar */
+@media (max-width: 768px) {
+    .flex {
+        flex-direction: column;
+    }
+    
+    #sidebar {
+        width: 100% !important;
+        height: auto !important;
+    }
+    
+    #sidebar .w-64 {
+        width: 100% !important;
+        padding: 1rem;
+    }
+    
+    #sidebar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    #sidebar nav a {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+}
+
+/* Responsive grid layouts */
+@media (max-width: 1024px) {
+    .grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px;
+    }
+}
+
+/* Responsive padding and margins */
+@media (max-width: 768px) {
+    .p-8 {
+        padding: 1rem;
+    }
+    
+    .mb-8 {
+        margin-bottom: 1.5rem;
+    }
+    
+    .space-y-8 > * + * {
+        margin-top: 1.5rem;
+    }
+}
+
+/* Responsive text */
+@media (max-width: 640px) {
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+    
+    .text-xl {
+        font-size: 1.25rem;
+    }
+    
+    .text-lg {
+        font-size: 1.125rem;
+    }
+}
+
+/* Responsive buttons and inputs */
+@media (max-width: 640px) {
+    .flex.items-center {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .flex.items-center > * {
+        width: 100%;
+    }
+    
+    input[type="text"],
+    select,
+    button {
+        width: 100%;
+    }
+}
+
+/* Activity feed responsiveness */
+@media (max-width: 768px) {
+    #activityFeed {
+        max-height: 400px;
+    }
+    
+    .flex.items-center.space-x-4 {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .flex.items-center.space-x-4 > * {
+        margin: 0.25rem;
+    }
+}
+
+/* Form responsiveness */
+@media (max-width: 768px) {
+    form.space-y-6 > div {
+        margin-bottom: 1rem;
+    }
+    
+    .flex.justify-end {
+        justify-content: center;
+    }
+}
+
+/* Integration cards responsiveness */
+@media (max-width: 640px) {
+    .flex.items-center.justify-between {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .flex.items-center.justify-between > * {
+        width: 100%;
+    }
+}
+
+/* Crawler controls responsiveness */
+@media (max-width: 768px) {
+    .flex.items-center.justify-between.bg-gray-700 {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .flex.items-center.justify-between.bg-gray-700 > * {
+        width: 100%;
+    }
 } 
