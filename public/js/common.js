@@ -71,11 +71,13 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
+// Set the backend API base URL for production
+const API_BASE_URL = "https://admin-lead-portal-production.up.railway.app";
+
 // API request helper function
 async function apiRequest(endpoint, options = {}) {
     try {
-        const baseUrl = window.location.origin;
-        const response = await fetch(`${baseUrl}${endpoint}`, {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             headers: {
                 'Content-Type': 'application/json'
             },
