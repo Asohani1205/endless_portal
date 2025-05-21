@@ -103,5 +103,25 @@ socket.on('newLead', (lead) => {
     updateStatsDisplay();
 });
 
+// Start/Stop Fetching Button Logic
+const toggleFetchingBtn = document.getElementById('toggleFetchingBtn');
+
+async function updateFetchingStatus() {
+    const res = await fetch('/api/fetching-status');
+    const data = await res.json();
+    toggleFetchingBtn.textContent = data.isFetching ? 'Stop Fetching' : 'Start Fetching';
+}
+
+toggleFetchingBtn?.addEventListener('click', async () => {
+    await fetch(
+        toggleFetchingBtn.textContent.includes('Start') ? '/api/start-fetching' : '/api/stop-fetching',
+        { method: 'POST' }
+    );
+    await updateFetchingStatus();
+});
+
+// On page load, set the correct button text
+updateFetchingStatus();
+
 // Initial stats update
 updateStatsDisplay(); 

@@ -21,6 +21,9 @@ let leadsData = [];
 let currentLeadIndex = 0;
 let activeLeads = [];
 
+// Add fetching toggle
+let isFetching = false;
+
 let stats = {
   dailyLeadsCount: 0,
   yesterdayLeadsCount: 35,
@@ -62,22 +65,33 @@ async function loadInitialLeads() {
 
 // Function to calculate random interval for lead emission
 function calculateLeadEmissionInterval() {
-  // Calculate total time in milliseconds (5 hours)
-  const totalTime = 5 * 60 * 60 * 1000; 
-  
-  // Get total number of leads to emit over the totalTime
-  // Uses current leadsData.length or falls back to 615 if leadsData is empty
-  const totalLeadsToEmit = leadsData.length || 615; 
-  
-  // Calculate average interval per lead
-  // Handle case where totalLeadsToEmit might be 0 to avoid division by zero
-  const averageInterval = totalLeadsToEmit > 0 ? totalTime / totalLeadsToEmit : totalTime; 
-  
+  // Only emit between 9 AM and 7 PM
+  const now = new Date();
+  const currentHour = now.getHours();
+  const WORK_START_HOUR = 9;
+  const WORK_END_HOUR = 19; // 7 PM
+
+  if (currentHour < WORK_START_HOUR || currentHour >= WORK_END_HOUR) {
+    // If outside working hours, wait until next 9 AM
+    const nextStart = new Date(now);
+    nextStart.setHours(WORK_START_HOUR, 0, 0, 0);
+    if (now.getHours() >= WORK_END_HOUR) {
+      // If after 7 PM, set to next day 9 AM
+      nextStart.setDate(now.getDate() + 1);
+    }
+    return nextStart - now;
+  }
+
+  // Calculate total time in milliseconds for the window (10 hours)
+  const totalTime = 10 * 60 * 60 * 1000; // 10 hours
+  const totalLeadsToEmit = 100;
+  const averageInterval = totalTime / totalLeadsToEmit;
+
   // Add some randomness (±20% of average interval)
   const randomFactor = 0.2;
   const minInterval = averageInterval * (1 - randomFactor);
   const maxInterval = averageInterval * (1 + randomFactor);
-  
+
   return Math.floor(Math.random() * (maxInterval - minInterval + 1) + minInterval);
 }
 
@@ -217,7 +231,9 @@ app.get('/api/test-db', async (req, res) => {
 // Global lead emission loop
 async function scheduledLeadEmitter() {
   try {
-    await emitNewLead();
+    if (isFetching) {
+      await emitNewLead();
+    }
   } catch (error) {
     console.error("Error during scheduled lead emission:", error);
   } finally {
@@ -250,4 +266,21 @@ http.listen(PORT, async () => {
   } else {
     console.error("System initialization failed. Lead emission schedule not started.");
   }
+});
+
+// API to start fetching
+app.post('/api/start-fetching', (req, res) => {
+  isFetching = true;
+  res.json({ status: 'started' });
+});
+
+// API to stop fetching
+app.post('/api/stop-fetching', (req, res) => {
+  isFetching = false;
+  res.json({ status: 'stopped' });
+});
+
+// API to get fetching status
+app.get('/api/fetching-status', (req, res) => {
+  res.json({ isFetching });
 }); 

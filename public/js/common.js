@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add('bg-blue-600', 'text-white');
         }
     });
+
+    // If sidebar is being loaded dynamically, hide or remove the Leads link
+    const leadsLink = document.querySelector('a[href*="leads"]');
+    if (leadsLink) {
+        leadsLink.style.display = 'none';
+    }
 });
 
 // Format date helper function

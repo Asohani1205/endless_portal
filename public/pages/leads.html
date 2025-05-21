@@ -22,6 +22,9 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <input type="text" placeholder="Search leads..." class="bg-gray-700 px-4 py-2 rounded-lg">
+                    <button id="toggleFetchingBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                      Start Fetching
+                    </button>
                 </div>
             </div>
 
@@ -76,58 +79,6 @@
     </div>
 
     <script src="../js/common.js"></script>
-    <script>
-        const socket = io();
-        const leadsTableBody = document.getElementById('leadsTableBody');
-        let leads = [];
-
-        // Clear any existing leads when page loads
-        leadsTableBody.innerHTML = '';
-
-        // Listen for new leads
-        socket.on('newLead', (lead) => {
-            // Add new lead to the beginning of the table
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${lead.name}</td>
-                <td>
-                    ${lead.mobile}<br>
-                    <span class="text-muted">${lead.city}</span>
-                </td>
-                <td><span class="badge bg-secondary">${lead.source}</span></td>
-                <td><span class="badge bg-success">New</span></td>
-                <td>${new Date().toLocaleString()}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" onclick="editLead('${lead._id}')">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteLead('${lead._id}')">Delete</button>
-                </td>
-            `;
-            
-            // Add the new row at the top of the table
-            leadsTableBody.insertBefore(row, leadsTableBody.firstChild);
-            
-            // Remove the last row if we have more than 10 rows
-            if (leadsTableBody.children.length > 10) {
-                leadsTableBody.removeChild(leadsTableBody.lastChild);
-            }
-        });
-
-        // Update total leads count
-        function updateTotalLeads() {
-            const totalLeadsElement = document.querySelector('.total-leads');
-            if (totalLeadsElement) {
-                totalLeadsElement.textContent = `Total Leads: ${leadsTableBody.children.length}`;
-            }
-        }
-
-        // Functions for edit and delete (you can implement these later)
-        function editLead(id) {
-            console.log('Edit lead:', id);
-        }
-
-        function deleteLead(id) {
-            console.log('Delete lead:', id);
-        }
-    </script>
+    <script src="../js/leads.js"></script>
 </body>
 </html> 

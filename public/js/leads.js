@@ -20,6 +20,7 @@ const searchInput = document.querySelector('input[placeholder="Search leads..."]
 const priorityFilter = document.querySelector('select[name="priority"]');
 const sourceFilter = document.querySelector('select[name="source"]');
 const dateRangeFilter = document.querySelector('select[name="dateRange"]');
+const toggleFetchingBtn = document.getElementById('toggleFetchingBtn');
 
 // Load leads data
 async function loadLeads() {
@@ -304,4 +305,21 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
-} 
+}
+
+async function updateFetchingStatus() {
+    const res = await fetch('/api/fetching-status');
+    const data = await res.json();
+    toggleFetchingBtn.textContent = data.isFetching ? 'Stop Fetching' : 'Start Fetching';
+}
+
+toggleFetchingBtn?.addEventListener('click', async () => {
+    const res = await fetch(
+        toggleFetchingBtn.textContent.includes('Start') ? '/api/start-fetching' : '/api/stop-fetching',
+        { method: 'POST' }
+    );
+    await updateFetchingStatus();
+});
+
+// On page load, set the correct button text
+updateFetchingStatus(); 

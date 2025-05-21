@@ -1,36 +1,29 @@
-const mongoose = require('mongoose');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
-async function testConnection(uri) {
+async function testConnection() {
     try {
-        console.log('Attempting to connect to:', uri);
-        await mongoose.connect(uri, {
+        console.log('Attempting to connect to MongoDB...');
+        console.log('Connection URI:', process.env.MONGODB_URI);
+        
+        const conn = await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
-        console.log('✅ Successfully connected to MongoDB!');
+        
+        console.log('Successfully connected to MongoDB!');
+        console.log('Host:', conn.connection.host);
+        console.log('Database:', conn.connection.name);
         
         // Test a simple operation
-        const collections = await mongoose.connection.db.listCollections().toArray();
+        const collections = await conn.connection.db.listCollections().toArray();
         console.log('Available collections:', collections.map(c => c.name));
         
-        await mongoose.disconnect();
-        console.log('Disconnected from MongoDB');
+        process.exit(0);
     } catch (error) {
-        console.error('❌ Connection failed:', error.message);
+        console.error('Connection Error:', error.message);
         process.exit(1);
     }
 }
 
-// Test local connection
-console.log('\nTesting local connection...');
-testConnection(process.env.LOCAL_MONGODB_URI)
-    .then(() => {
-        // Test Atlas connection
-        console.log('\nTesting Atlas connection...');
-        return testConnection(process.env.PRODUCTION_MONGODB_URI);
-    })
-    .catch(error => {
-        console.error('Error during testing:', error);
-        process.exit(1);
-    }); 
+testConnection(); 
