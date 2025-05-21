@@ -60,16 +60,18 @@ async function loadInitialLeads() {
   }
 }
 
-// Function to get random interval between min and max seconds
-function getRandomInterval() {
-  // Calculate total time in milliseconds (10 minutes = 600000ms)
-  const totalTime = 600000;
+// Function to calculate random interval for lead emission
+function calculateLeadEmissionInterval() {
+  // Calculate total time in milliseconds (5 hours)
+  const totalTime = 5 * 60 * 60 * 1000; 
   
-  // Get total number of leads from MongoDB
-  const totalLeads = leadsData.length || 20; // Default to 20 if no leads
+  // Get total number of leads to emit over the totalTime
+  // Uses current leadsData.length or falls back to 615 if leadsData is empty
+  const totalLeadsToEmit = leadsData.length || 615; 
   
-  // Calculate average interval for leads
-  const averageInterval = totalTime / totalLeads;
+  // Calculate average interval per lead
+  // Handle case where totalLeadsToEmit might be 0 to avoid division by zero
+  const averageInterval = totalLeadsToEmit > 0 ? totalTime / totalLeadsToEmit : totalTime; 
   
   // Add some randomness (±20% of average interval)
   const randomFactor = 0.2;
@@ -212,18 +214,24 @@ app.get('/api/test-db', async (req, res) => {
   }
 });
 
+// Global lead emission loop
+async function scheduledLeadEmitter() {
+  try {
+    await emitNewLead();
+  } catch (error) {
+    console.error("Error during scheduled lead emission:", error);
+  } finally {
+    const nextInterval = calculateLeadEmissionInterval();
+    setTimeout(scheduledLeadEmitter, nextInterval);
+  }
+}
+
 // Socket.IO connection handling
 io.on('connection', async (socket) => {
   console.log('New client connected');
   
-  // Start emitting leads at calculated intervals
-  const emitLeads = () => {
-    emitNewLead();
-    const interval = getRandomInterval();
-    setTimeout(emitLeads, interval);
-  };
-  
-  emitLeads();
+  // Note: The lead emission is now global and starts after server initialization.
+  // No need to start it per connection.
   
   socket.on('disconnect', () => {
     console.log('Client disconnected');
@@ -234,5 +242,12 @@ io.on('connection', async (socket) => {
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
-  await loadInitialLeads();
+  const systemReady = await loadInitialLeads();
+  if (systemReady) {
+    // Start the global lead emission loop once the system is ready
+    console.log('Starting global lead emission schedule...');
+    scheduledLeadEmitter(); 
+  } else {
+    console.error("System initialization failed. Lead emission schedule not started.");
+  }
 }); 
