@@ -43,8 +43,8 @@ let stats = {
   dataPointsCollected: 0
 };
 
-const WORK_START_HOUR = 9;
-const WORK_END_HOUR = 21; // 9 PM
+const WORK_START_HOUR = 6; // 6 AM
+const WORK_END_HOUR = 24; // 12 AM (midnight)
 
 // Add this at the top of the file, after the imports
 let sourceIndex = 0;
@@ -71,31 +71,31 @@ async function loadInitialLeads() {
 
 // Function to calculate random interval for lead emission
 function calculateLeadEmissionInterval() {
-  // Only emit between 9 AM and 9 PM
+  // Only emit between 6 AM and 12 AM
   const now = new Date();
   const currentHour = now.getHours();
-  if (currentHour < WORK_START_HOUR || currentHour >= WORK_END_HOUR) {
-    // If outside working hours, wait until next 9 AM
-    const nextStart = new Date(now);
-    nextStart.setHours(WORK_START_HOUR, 0, 0, 0);
-    if (now.getHours() >= WORK_END_HOUR) {
-      // If after 9 PM, set to next day 9 AM
-      nextStart.setDate(now.getDate() + 1);
+  if (currentHour >= WORK_START_HOUR && currentHour < WORK_END_HOUR) {
+    // Calculate total time in milliseconds for the window (6 hours)
+    const totalTime = 6 * 60 * 60 * 1000; // 6 hours
+    const totalLeadsToEmit = 100;
+    const averageInterval = totalTime / totalLeadsToEmit;
+
+    // Add some randomness (±20% of average interval)
+    const randomFactor = 0.2;
+    const minInterval = averageInterval * (1 - randomFactor);
+    const maxInterval = averageInterval * (1 + randomFactor);
+
+    return Math.floor(Math.random() * (maxInterval - minInterval + 1) + minInterval);
+  } else {
+    // If outside working hours, wait until next 6 AM
+    const nextStart = new Date();
+    if (currentHour >= WORK_END_HOUR) {
+      // If after 12 AM, set to next day 6 AM
+      nextStart.setDate(nextStart.getDate() + 1);
     }
+    nextStart.setHours(WORK_START_HOUR, 0, 0, 0);
     return nextStart - now;
   }
-
-  // Calculate total time in milliseconds for the window (10 hours)
-  const totalTime = 10 * 60 * 60 * 1000; // 10 hours
-  const totalLeadsToEmit = 100;
-  const averageInterval = totalTime / totalLeadsToEmit;
-
-  // Add some randomness (±20% of average interval)
-  const randomFactor = 0.2;
-  const minInterval = averageInterval * (1 - randomFactor);
-  const maxInterval = averageInterval * (1 + randomFactor);
-
-  return Math.floor(Math.random() * (maxInterval - minInterval + 1) + minInterval);
 }
 
 // Function to emit a new lead
