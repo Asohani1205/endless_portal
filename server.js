@@ -38,7 +38,7 @@ let stats = {
 };
 
 const WORK_START_HOUR = 9;
-const WORK_END_HOUR = 21;
+const WORK_END_HOUR = 21; // 9 PM
 
 // Add this at the top of the file, after the imports
 let sourceIndex = 0;
@@ -65,18 +65,15 @@ async function loadInitialLeads() {
 
 // Function to calculate random interval for lead emission
 function calculateLeadEmissionInterval() {
-  // Only emit between 9 AM and 7 PM
+  // Only emit between 9 AM and 9 PM
   const now = new Date();
   const currentHour = now.getHours();
-  const WORK_START_HOUR = 9;
-  const WORK_END_HOUR = 19; // 7 PM
-
   if (currentHour < WORK_START_HOUR || currentHour >= WORK_END_HOUR) {
     // If outside working hours, wait until next 9 AM
     const nextStart = new Date(now);
     nextStart.setHours(WORK_START_HOUR, 0, 0, 0);
     if (now.getHours() >= WORK_END_HOUR) {
-      // If after 7 PM, set to next day 9 AM
+      // If after 9 PM, set to next day 9 AM
       nextStart.setDate(now.getDate() + 1);
     }
     return nextStart - now;
