@@ -89,6 +89,10 @@ function updateStatsDisplay() {
 }
 
 // Socket event handlers
+if (typeof socket === 'undefined') {
+  window.socket = io(API_BASE_URL);
+}
+
 socket.on('connect', () => {
     console.log('Connected to server');
 });
