@@ -1,6 +1,3 @@
-// Initialize Socket.IO connection
-const socket = io("https://admin-lead-portal-production.up.railway.app");
-
 // DOM Elements
 const activityFeed = document.getElementById('activityFeed');
 const newLeadsCount = document.getElementById('newLeadsCount');

@@ -1,6 +1,3 @@
-// Initialize Socket.IO connection
-const socket = io();
-
 // DOM Elements
 const newLeadsCount = document.getElementById('newLeadsCount');
 const leadsChange = document.getElementById('leadsChange');

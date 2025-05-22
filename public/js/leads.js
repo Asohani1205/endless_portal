@@ -1,6 +1,3 @@
-// Initialize Socket.IO connection
-const socket = io("https://admin-lead-portal-production.up.railway.app");
-
 // State management
 let currentPage = 1;
 let currentFilters = {
