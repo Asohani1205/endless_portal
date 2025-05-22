@@ -108,21 +108,39 @@ socket.on('newLead', (lead) => {
 const toggleFetchingBtn = document.getElementById('toggleFetchingBtn');
 
 async function updateFetchingStatus() {
-    const res = await fetch(`${API_BASE_URL}/api/fetching-status`);
-    const data = await res.json();
-    toggleFetchingBtn.textContent = data.isFetching ? 'Stop Fetching' : 'Start Fetching';
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/fetching-status`);
+        const data = await res.json();
+        if (toggleFetchingBtn) {
+            toggleFetchingBtn.textContent = data.isFetching ? 'Stop Fetching' : 'Start Fetching';
+            toggleFetchingBtn.disabled = false;
+        }
+    } catch (error) {
+        if (toggleFetchingBtn) {
+            toggleFetchingBtn.textContent = 'Error';
+            toggleFetchingBtn.disabled = false;
+        }
+    }
 }
 
 toggleFetchingBtn?.addEventListener('click', async () => {
-    await fetch(
-        `${API_BASE_URL}${toggleFetchingBtn.textContent.includes('Start') ? '/api/start-fetching' : '/api/stop-fetching'}`,
-        { method: 'POST' }
-    );
+    if (!toggleFetchingBtn) return;
+    toggleFetchingBtn.disabled = true;
+    const isStarting = toggleFetchingBtn.textContent.includes('Start');
+    toggleFetchingBtn.textContent = isStarting ? 'Starting...' : 'Stopping...';
+    try {
+        await fetch(
+            `${API_BASE_URL}${isStarting ? '/api/start-fetching' : '/api/stop-fetching'}`,
+            { method: 'POST' }
+        );
+    } catch (error) {}
     await updateFetchingStatus();
 });
 
-// On page load, set the correct button text
-updateFetchingStatus();
+document.addEventListener('DOMContentLoaded', () => {
+    updateFetchingStatus();
+    updateStatsDisplay();
+});
 
 // Initial stats update
 updateStatsDisplay(); 
