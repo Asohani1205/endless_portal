@@ -19,7 +19,9 @@ const sourceFilter = document.querySelector('select[name="source"]');
 const dateRangeFilter = document.querySelector('select[name="dateRange"]');
 const toggleFetchingBtn = document.getElementById('toggleFetchingBtn');
 
-const socket = io(API_BASE_URL);
+if (typeof socket === 'undefined') {
+  window.socket = io(API_BASE_URL);
+}
 
 // Load leads data
 async function loadLeads() {

@@ -71,7 +71,7 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// Set the backend API base URL for local development
+// Set the backend API base URL for local development or production as needed
 const API_BASE_URL = "http://localhost:8080";
 
 // API request helper function

@@ -264,17 +264,19 @@ io.on('connection', async (socket) => {
   });
 });
 
-// Restore HTTP API endpoints for fetching control
+// API to start fetching
 app.post('/api/start-fetching', (req, res) => {
   isFetching = true;
   res.json({ status: 'started' });
 });
 
+// API to stop fetching
 app.post('/api/stop-fetching', (req, res) => {
   isFetching = false;
   res.json({ status: 'stopped' });
 });
 
+// API to get fetching status
 app.get('/api/fetching-status', (req, res) => {
   res.json({ isFetching });
 });
