@@ -3,7 +3,11 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
   cors: {
-    origin: "https://sudarshanportal.netlify.app",
+    origin: [
+      "http://localhost:8080",
+      "https://sudarshanportal.netlify.app",
+      "http://localhost:3000"
+    ],
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -18,7 +22,14 @@ require('dotenv').config();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:8080",
+    "https://sudarshanportal.netlify.app",
+    "http://localhost:3000"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.static('public'));
 
