@@ -96,4 +96,106 @@ async function apiRequest(endpoint, options = {}) {
         showNotification(error.message, 'error');
         throw error;
     }
-} 
+}
+
+// Socket connection and fetching control
+let socket;
+let isConnected = false;
+
+function connectSocket() {
+    if (!isConnected) {
+        socket = io('https://sudarshanportal.netlify.app', {
+            transports: ['websocket'],
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
+        });
+
+        socket.on('connect', () => {
+            console.log('Socket connected');
+            isConnected = true;
+            updateConnectionStatus(true);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Socket disconnected');
+            isConnected = false;
+            updateConnectionStatus(false);
+        });
+
+        socket.on('newLead', (lead) => {
+            console.log('New lead received:', lead);
+            if (currentPage === 'leads') {
+                addLeadToTable(lead);
+                updateStats();
+            }
+        });
+
+        socket.on('fetchingStatus', (data) => {
+            updateFetchingStatus(data.isFetching);
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+            isConnected = false;
+            updateConnectionStatus(false);
+        });
+    }
+}
+
+function disconnectSocket() {
+    if (socket && isConnected) {
+        socket.disconnect();
+        isConnected = false;
+        updateConnectionStatus(false);
+    }
+}
+
+function startFetching() {
+    if (socket && isConnected) {
+        socket.emit('startFetching');
+    } else {
+        connectSocket();
+        socket.on('connect', () => {
+            socket.emit('startFetching');
+        });
+    }
+}
+
+function stopFetching() {
+    if (socket && isConnected) {
+        socket.emit('stopFetching');
+    }
+}
+
+function updateFetchingStatus(isFetching) {
+    const startBtn = document.getElementById('startFetching');
+    const stopBtn = document.getElementById('stopFetching');
+    if (startBtn && stopBtn) {
+        startBtn.style.display = isFetching ? 'none' : 'block';
+        stopBtn.style.display = isFetching ? 'block' : 'none';
+    }
+}
+
+// Update the event listeners in the DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+
+    // Update fetching control buttons
+    const startBtn = document.getElementById('startFetching');
+    const stopBtn = document.getElementById('stopFetching');
+    
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            startFetching();
+        });
+    }
+    
+    if (stopBtn) {
+        stopBtn.addEventListener('click', () => {
+            stopFetching();
+        });
+    }
+
+    // ... rest of the existing code ...
+}); 

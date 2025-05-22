@@ -249,9 +249,21 @@ async function scheduledLeadEmitter() {
 io.on('connection', async (socket) => {
   console.log('New client connected');
   
-  // Note: The lead emission is now global and starts after server initialization.
-  // No need to start it per connection.
+  // Send initial fetching status to the client
+  socket.emit('fetchingStatus', { isFetching });
   
+  socket.on('startFetching', () => {
+    isFetching = true;
+    console.log('Lead fetching started');
+    socket.emit('fetchingStatus', { isFetching: true });
+  });
+
+  socket.on('stopFetching', () => {
+    isFetching = false;
+    console.log('Lead fetching stopped');
+    socket.emit('fetchingStatus', { isFetching: false });
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
@@ -269,21 +281,4 @@ http.listen(PORT, async () => {
   } else {
     console.error("System initialization failed. Lead emission schedule not started.");
   }
-});
-
-// API to start fetching
-app.post('/api/start-fetching', (req, res) => {
-  isFetching = true;
-  res.json({ status: 'started' });
-});
-
-// API to stop fetching
-app.post('/api/stop-fetching', (req, res) => {
-  isFetching = false;
-  res.json({ status: 'stopped' });
-});
-
-// API to get fetching status
-app.get('/api/fetching-status', (req, res) => {
-  res.json({ isFetching });
 }); 
