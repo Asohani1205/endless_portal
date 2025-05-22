@@ -210,30 +210,31 @@ function updateStatsDisplay(stats) {
 }
 
 // Socket event handlers
-socket.on('newLead', (lead) => {
-    console.log('New lead received:', lead); // Debug log
-    
-    // Create and add map point
-    createMapPoint(lead.address, lead.priority === 'High');
-    
-    // Create and add activity item
-    const activityItem = createActivityItem(lead);
-    activityFeed.insertBefore(activityItem, activityFeed.firstChild);
-    
-    // Remove old items if more than 5
-    if (activityFeed.children.length > 5) {
-        activityFeed.lastChild.remove();
-    }
-});
+if (typeof socket !== 'undefined' && socket) {
+    socket.on('newLead', (lead) => {
+        console.log('New lead received:', lead); // Debug log
+        // Create and add map point
+        createMapPoint(lead.address, lead.priority === 'High');
+        // Create and add activity item
+        const activityItem = createActivityItem(lead);
+        activityFeed.insertBefore(activityItem, activityFeed.firstChild);
+        // Remove old items if more than 5
+        if (activityFeed.children.length > 5) {
+            activityFeed.lastChild.remove();
+        }
+    });
 
-socket.on('updateStats', (stats) => {
-    updateStatsDisplay(stats);
-});
+    socket.on('updateStats', (stats) => {
+        updateStatsDisplay(stats);
+    });
 
-// Initialize with loading state
-socket.on('connect', () => {
-  console.log('Connected to server');
-});
+    // Initialize with loading state
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+} else {
+    console.error('Socket is not defined. Make sure common.js is loaded before app.js.');
+}
 
 // Initialize map when page loads
 window.addEventListener('load', initMap); 
