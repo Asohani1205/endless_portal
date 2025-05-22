@@ -104,7 +104,7 @@ let isConnected = false;
 
 function connectSocket() {
     if (!isConnected) {
-        socket = io('https://sudarshanportal.netlify.app', {
+        socket = io(API_BASE_URL, {
             transports: ['websocket'],
             reconnection: true,
             reconnectionAttempts: 5,
@@ -125,8 +125,10 @@ function connectSocket() {
 
         socket.on('newLead', (lead) => {
             console.log('New lead received:', lead);
-            if (currentPage === 'leads') {
+            if (typeof addLeadToTable === 'function') {
                 addLeadToTable(lead);
+            }
+            if (typeof updateStats === 'function') {
                 updateStats();
             }
         });
@@ -179,23 +181,32 @@ function updateFetchingStatus(isFetching) {
 
 // Update the event listeners in the DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', function() {
-    // ... existing code ...
+    // Ensure both Start and Stop buttons exist
+    let startBtn = document.getElementById('startFetching');
+    let stopBtn = document.getElementById('stopFetching');
 
-    // Update fetching control buttons
-    const startBtn = document.getElementById('startFetching');
-    const stopBtn = document.getElementById('stopFetching');
-    
-    if (startBtn) {
-        startBtn.addEventListener('click', () => {
-            startFetching();
-        });
+    if (!startBtn) {
+        startBtn = document.createElement('button');
+        startBtn.id = 'startFetching';
+        startBtn.textContent = 'Start Fetching';
+        startBtn.className = 'btn btn-primary';
+        document.body.appendChild(startBtn);
     }
-    
-    if (stopBtn) {
-        stopBtn.addEventListener('click', () => {
-            stopFetching();
-        });
+    if (!stopBtn) {
+        stopBtn = document.createElement('button');
+        stopBtn.id = 'stopFetching';
+        stopBtn.textContent = 'Stop Fetching';
+        stopBtn.className = 'btn btn-danger';
+        stopBtn.style.display = 'none';
+        document.body.appendChild(stopBtn);
     }
+
+    startBtn.addEventListener('click', () => {
+        startFetching();
+    });
+    stopBtn.addEventListener('click', () => {
+        stopFetching();
+    });
 
     // ... rest of the existing code ...
 }); 
