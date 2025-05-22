@@ -71,8 +71,8 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// Set the backend API base URL for local development or production as needed
-const API_BASE_URL = "http://localhost:8080";
+// Set the backend API base URL for production
+const API_BASE_URL = "https://admin-lead-portal-production.up.railway.app";
 
 // API request helper function
 async function apiRequest(endpoint, options = {}) {
