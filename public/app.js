@@ -209,32 +209,25 @@ function updateStatsDisplay(stats) {
     dailyDataPoints.textContent = `${stats.dailyDataPoints.toLocaleString()} collected today`;
 }
 
+const socket = io(API_BASE_URL);
+
 // Socket event handlers
-if (typeof socket !== 'undefined' && socket) {
-    socket.on('newLead', (lead) => {
-        console.log('New lead received:', lead); // Debug log
-        // Create and add map point
-        createMapPoint(lead.address, lead.priority === 'High');
-        // Create and add activity item
-        const activityItem = createActivityItem(lead);
-        activityFeed.insertBefore(activityItem, activityFeed.firstChild);
-        // Remove old items if more than 5
-        if (activityFeed.children.length > 5) {
-            activityFeed.lastChild.remove();
-        }
-    });
+socket.on('newLead', (lead) => {
+    console.log('New lead received:', lead); // Debug log
+    // Create and add map point
+    createMapPoint(lead.address, lead.priority === 'High');
+    // Create and add activity item
+    const activityItem = createActivityItem(lead);
+    activityFeed.insertBefore(activityItem, activityFeed.firstChild);
+    // Remove old items if more than 5
+    if (activityFeed.children.length > 5) {
+        activityFeed.lastChild.remove();
+    }
+});
 
-    socket.on('updateStats', (stats) => {
-        updateStatsDisplay(stats);
-    });
-
-    // Initialize with loading state
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
-} else {
-    console.error('Socket is not defined. Make sure common.js is loaded before app.js.');
-}
+socket.on('updateStats', (stats) => {
+    updateStatsDisplay(stats);
+});
 
 // Initialize map when page loads
 window.addEventListener('load', initMap); 

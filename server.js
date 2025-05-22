@@ -248,25 +248,24 @@ async function scheduledLeadEmitter() {
 // Socket.IO connection handling
 io.on('connection', async (socket) => {
   console.log('New client connected');
-  
-  // Send initial fetching status to the client
-  socket.emit('fetchingStatus', { isFetching });
-  
-  socket.on('startFetching', () => {
-    isFetching = true;
-    console.log('Lead fetching started');
-    socket.emit('fetchingStatus', { isFetching: true });
-  });
-
-  socket.on('stopFetching', () => {
-    isFetching = false;
-    console.log('Lead fetching stopped');
-    socket.emit('fetchingStatus', { isFetching: false });
-  });
-
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
+});
+
+// Restore HTTP API endpoints for fetching control
+app.post('/api/start-fetching', (req, res) => {
+  isFetching = true;
+  res.json({ status: 'started' });
+});
+
+app.post('/api/stop-fetching', (req, res) => {
+  isFetching = false;
+  res.json({ status: 'stopped' });
+});
+
+app.get('/api/fetching-status', (req, res) => {
+  res.json({ isFetching });
 });
 
 // Start server

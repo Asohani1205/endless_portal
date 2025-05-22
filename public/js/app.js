@@ -13,6 +13,8 @@ const dailyDataPoints = document.getElementById('dailyDataPoints');
 let todayLeads = 0;
 let totalLeadsProcessed = 0;
 
+const socket = io(API_BASE_URL);
+
 // Create activity feed item
 function createActivityItem(lead) {
     const item = document.createElement('div');
