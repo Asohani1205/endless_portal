@@ -116,6 +116,7 @@ async function updateFetchingStatus() {
             toggleFetchingBtn.disabled = false;
         }
     } catch (error) {
+        console.error('Error fetching status:', error);
         if (toggleFetchingBtn) {
             toggleFetchingBtn.textContent = 'Error';
             toggleFetchingBtn.disabled = false;
@@ -129,11 +130,22 @@ toggleFetchingBtn?.addEventListener('click', async () => {
     const isStarting = toggleFetchingBtn.textContent.includes('Start');
     toggleFetchingBtn.textContent = isStarting ? 'Starting...' : 'Stopping...';
     try {
-        await fetch(
-            `${API_BASE_URL}${isStarting ? '/api/start-fetching' : '/api/stop-fetching'}`,
-            { method: 'POST' }
+        const response = await fetch(
+            `${API_BASE_URL}/api/${isStarting ? 'start' : 'stop'}-fetching`,
+            { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
         );
-    } catch (error) {}
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+    } catch (error) {
+        console.error('Error toggling fetch:', error);
+        toggleFetchingBtn.textContent = 'Error';
+    }
     await updateFetchingStatus();
 });
 
