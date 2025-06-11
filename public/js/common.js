@@ -72,7 +72,7 @@ function showNotification(message, type = 'success') {
 }
 
 // Set the backend API base URL for production
-const API_BASE_URL = "https://admin-lead-portal-production-7382.up.railway.app";
+const API_BASE_URL = "https://endlessportal-production.up.railway.app";
 
 // API request helper function
 async function apiRequest(endpoint, options = {}) {

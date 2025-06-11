@@ -17,6 +17,7 @@ const connectDB = require('./config/database');
 const Lead = require('./models/Lead');
 const cors = require('cors');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 // Connect to MongoDB
 connectDB();
@@ -71,11 +72,25 @@ const sources = [
 async function loadInitialLeads() {
   try {
     console.log('Initializing lead generation system...');
+    console.log('MongoDB URI:', process.env.MONGODB_URI ? 'URI is set' : 'URI is not set');
+    
+    // First, get the total count
+    const totalLeads = await Lead.countDocuments({});
+    console.log('Total leads in database:', totalLeads);
+    
+    // Then get the leads
     leadsData = await Lead.find({}).sort({ timestamp: -1 });
     console.log(`System ready with ${leadsData.length} potential leads`);
+    
+    // Log the first few leads for debugging
+    if (leadsData.length > 0) {
+      console.log('Sample lead:', JSON.stringify(leadsData[0], null, 2));
+    }
+    
     return true;
   } catch (error) {
     console.error('Error initializing system:', error.message);
+    console.error('Full error:', error);
     return false;
   }
 }
@@ -242,6 +257,27 @@ app.get('/api/test-db', async (req, res) => {
   }
 });
 
+// Test endpoint to verify database connection and data
+app.get('/api/debug/leads', async (req, res) => {
+  try {
+    const totalLeads = await Lead.countDocuments({});
+    const sampleLeads = await Lead.find({}).limit(5);
+    
+    res.json({
+      totalLeads,
+      sampleLeads,
+      databaseUri: process.env.MONGODB_URI ? 'URI is set' : 'URI is not set',
+      connectionState: mongoose.connection.readyState,
+      connectionHost: mongoose.connection.host
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+      stack: error.stack
+    });
+  }
+});
+
 // Global lead emission loop
 async function scheduledLeadEmitter() {
   try {
@@ -287,12 +323,17 @@ app.get('/api/fetching-status', (req, res) => {
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
-  const systemReady = await loadInitialLeads();
-  if (systemReady) {
-    // Start the global lead emission loop once the system is ready
-    console.log('Starting global lead emission schedule...');
-    scheduledLeadEmitter(); 
-  } else {
-    console.error("System initialization failed. Lead emission schedule not started.");
+  try {
+    const systemReady = await loadInitialLeads();
+    if (systemReady) {
+      console.log('Starting global lead emission schedule...');
+      scheduledLeadEmitter();
+    } else {
+      console.error("System initialization failed. Lead emission schedule not started.");
+    }
+  } catch (error) {
+    console.error("Error during server initialization:", error);
+    // Don't exit the process, let the server keep running
+    // The MongoDB connection will be retried automatically
   }
 }); 
