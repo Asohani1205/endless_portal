@@ -3,11 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
   cors: {
-    origin: [
-      "http://localhost:8080",
-      "https://endlessportal.netlify.app",
-      "http://localhost:3000"
-    ],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -24,11 +20,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:8080",
-    "https://endlessportal.netlify.app",
-    "http://localhost:3000"
-  ],
+  origin: ["http://localhost:3000"],
   credentials: true
 }));
 app.use(express.json());
